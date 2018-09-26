@@ -2,45 +2,62 @@ import * as React from 'react';
 import { StyleSheet, Text, View } from 'react-native';
 import PlaceInput from "./components/PlaceInput/PlaceInput";
 import Places from "./components/Places/Places";
+import { Place } from "./models";
+// @ts-ignore
+import SmexyImage from "./assets/edinburgh-castle.jpg";
+import PlaceDetails from "./components/Places/PlaceDetails/PlaceDetails";
 
 export default class App extends React.Component<{}, State> {
     state = {
-        placeName: '',
-        places: []
-    };
-    
-    placeNameChangedHandler = (placeName: string) => {
-        this.setState({ placeName });
+        places: [],
+        selectedPlace: null
     };
 
-    placeSubmitHandler = () => {
-        if (this.state.placeName.trim().length > 0) {
-            this.setState(state => ({
-                places: [ ...state.places, state.placeName ],
-                placeName: ''
-            }));
-        }
+    placeSubmitHandler = (name: string) => {
+        const newItem = {
+            key: Math.random().toString(),
+            name,
+            image: SmexyImage
+        };
+        this.setState(state => ({ places: [...state.places, newItem] }));
+    };
+
+    placeSelectedHandler = (key: string) => {
+        this.setState(state => ({
+            selectedPlace: state.places.find(place => place.key === key) || null
+        }));
+    };
+
+    placeDeletedHandler = () => {
+        this.setState(state => ({
+            places: state.places.filter(place => place.key !== state.selectedPlace!.key),
+            selectedPlace: null
+        }));
+    };
+
+    modalClosedHandler = () => {
+        this.setState({ selectedPlace: null });
     };
     
     render() {
-        const { placeName, places } = this.state;
         return (
             <View style={styles.container}>
-                <Text style={styles.welcome}>Welcome to my Super-Duper App!</Text>
-                <PlaceInput
-                    value={placeName}
-                    onChange={this.placeNameChangedHandler}
-                    onSubmit={this.placeSubmitHandler}
+                <PlaceDetails
+                    place={this.state.selectedPlace}
+                    onDelete={this.placeDeletedHandler}
+                    onClose={this.modalClosedHandler}
                 />
-                <Places places={places} />
+                <Text style={styles.welcome}>Welcome to my Super-Duper App!</Text>
+                <PlaceInput onSubmit={this.placeSubmitHandler} />
+                <Places places={this.state.places} onSelect={this.placeSelectedHandler} />
             </View>
         );
     }
 }
 
 export interface State {
-    placeName: string;
-    places: string[]
+    places: Place[],
+    selectedPlace: Place | null
 }
 
 const styles = StyleSheet.create({
