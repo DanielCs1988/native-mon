@@ -1,6 +1,7 @@
 import React from 'react';
 import {Modal, View, Text, Image, Button, StyleSheet, ImageURISource} from "react-native";
 import { Place } from "../../../models";
+import IconButton from "../../UI/IconButton/IconButton";
 
 const PlaceDetails = ({ place, onDelete, onClose }: Props) => (
     <Modal visible={place !== null} animationType="slide" onRequestClose={onClose}>
@@ -14,7 +15,7 @@ const PlaceDetails = ({ place, onDelete, onClose }: Props) => (
                 : null
             }
             <View>
-                <Button title="Delete" onPress={onDelete} color="red" />
+                <IconButton icon="ios-trash" color="red" size={30} onClick={onDelete}/>
                 <Button title="Close" onPress={onClose} />
             </View>
         </View>

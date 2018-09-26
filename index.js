@@ -1,5 +1,5 @@
 import {AppRegistry} from 'react-native';
-import App from './src/App';
 import {name as NativeMon} from './app.json';
+import AppWithStore from "./src/store/store";
 
-AppRegistry.registerComponent(NativeMon, () => App);
+AppRegistry.registerComponent(NativeMon, () => AppWithStore);

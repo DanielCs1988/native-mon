@@ -1,4 +1,5 @@
 import {Place} from "../models";
+import {PlaceActions} from "./actions/places";
 
 export interface PlaceState {
     places: Place[];
@@ -9,7 +10,7 @@ export interface AppState {
     places: PlaceState;
 }
 
-// export type AppActions =
+export type AppActions = PlaceActions;
 
 type FunctionType = (...args: any[]) => any;
 type ActionCreatorsMapObject = {
