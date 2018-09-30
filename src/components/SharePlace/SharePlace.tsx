@@ -8,6 +8,7 @@ import {Navigator} from "react-native-navigation";
 import LocationPicker from "./LocationPicker/LocationPicker";
 import Input from "../UI/Input/Input";
 import {validate} from "../../utils";
+import {LatLng} from "react-native-maps";
 
 class SharePlace extends React.Component<Props, any> {
     state = {
@@ -18,6 +19,10 @@ class SharePlace extends React.Component<Props, any> {
             rules: {
                 minLength: 1
             }
+        },
+        location: {
+            value: null,
+            valid: false
         }
     };
 
@@ -41,19 +46,31 @@ class SharePlace extends React.Component<Props, any> {
         }));
     };
 
+    locationPickedHandler = (coordinates: LatLng) => {
+        this.setState({
+            location: {
+                value: coordinates,
+                valid: true
+            }
+        })
+    };
+
     newPlaceHandler = () => {
-        this.props.onNewPlace(this.state.placeName.value);
+        this.props.onNewPlace(
+            this.state.placeName.value,
+            this.state.location.value!
+        );
         this.setState({ placeName: '' });
     };
 
     render() {
-        const { placeName } = this.state;
+        const { placeName, location } = this.state;
         return (
             <ScrollView>
                 <View style={styles.container}>
                     <Header>Share a place with us!</Header>
                     <ImagePicker image={imagePlaceholder} />
-                    <LocationPicker location={imagePlaceholder} />
+                    <LocationPicker onLocationPicked={this.locationPickedHandler} />
                     <Input
                         placeholder="An awesome place..."
                         value={placeName.value}
@@ -64,7 +81,7 @@ class SharePlace extends React.Component<Props, any> {
                     <PositionedButton
                         title="Share the Place!"
                         onPress={this.newPlaceHandler}
-                        disabled={!this.state.placeName.valid}
+                        disabled={!(placeName.valid && location.valid)}
                     />
                 </View>
             </ScrollView>
@@ -73,7 +90,7 @@ class SharePlace extends React.Component<Props, any> {
 }
 
 export interface Props {
-    onNewPlace: (name: string) => void;
+    onNewPlace: (name: string, location: LatLng) => void;
     navigator: Navigator;
 }
 

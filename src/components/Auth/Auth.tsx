@@ -127,10 +127,10 @@ class AuthScreen extends React.Component<Props, any> {
                             <StyledButton
                                 onPress={this.loginHandler}
                                 btnStyle={styles.button}
-                                disabled={!(
-                                    email.valid && password.valid &&
-                                    (onLoginPage || confirmPassword.valid)
-                                )}
+                                // disabled={!(
+                                //     email.valid && password.valid &&
+                                //     (onLoginPage || confirmPassword.valid)
+                                // )}
                             >Submit</StyledButton>
                         </View>
                     </TouchableWithoutFeedback>

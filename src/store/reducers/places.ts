@@ -13,8 +13,9 @@ const placeReducer = (state = initialState, action: PlaceActions) => {
                 ...state,
                 places: [...state.places, {
                     key: Math.random().toString(),
-                    name: action.payload,
-                    image: SmexyImage
+                    name: action.payload.name,
+                    image: SmexyImage,
+                    location: action.payload.location
                 }]
             };
         case REMOVE_PLACE:
