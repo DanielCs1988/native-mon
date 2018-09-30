@@ -4,7 +4,7 @@ import startMainTabs from "../startMainTabs/startMainTabs";
 import Input from "../../components/UI/Input/Input";
 import Header from "../../components/UI/Header/Header";
 import backgroundImage from "../../assets/background.jpg";
-import BgButton from "../../components/UI/BgButton/BgButton";
+import StyledButton from "../../components/UI/StyledButton/StyledButton";
 import ResponsiveStyle from "../../hoc/ResponsiveStyle/ResponsiveStyle";
 import withResponsivity from "../../hoc/withResponsivity/withResponsivity";
 
@@ -19,7 +19,7 @@ class AuthScreen extends React.Component<Props, {}> {
             <ImageBackground source={backgroundImage} style={styles.bgImage}>
                 <View style={styles.container}>
                     { landscapeMode ? null : <Header>Please Log In</Header> }
-                    <BgButton onPress={() => {}} color="#29AAF4">Switch to Login</BgButton>
+                    <StyledButton onPress={() => {}} btnStyle={styles.button}>Switch to Login</StyledButton>
                     <Input placeholder="Your email..." style={styles.input} />
                     <ResponsiveStyle shouldStyle={landscapeMode} style={styles.passwordContainer}>
                         <Input
@@ -31,7 +31,7 @@ class AuthScreen extends React.Component<Props, {}> {
                             style={[styles.input, landscapeMode ? styles.password: null]}
                         />
                     </ResponsiveStyle>
-                    <BgButton onPress={this.loginHandler} color="#29AAF4">Submit</BgButton>
+                    <StyledButton onPress={this.loginHandler} btnStyle={styles.button}>Submit</StyledButton>
                 </View>
             </ImageBackground>
         );
@@ -64,6 +64,14 @@ const styles = StyleSheet.create({
         flexDirection: 'row',
         justifyContent: 'space-between',
         width: '80%'
+    },
+    button: {
+        padding: 10,
+        margin: 5,
+        borderRadius: 5,
+        borderWidth: 1,
+        borderColor: '#777',
+        backgroundColor: '#29AAF4'
     }
 });
 

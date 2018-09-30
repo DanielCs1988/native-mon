@@ -1,7 +1,7 @@
 import * as React from 'react';
 import {Button, StyleSheet, View} from "react-native";
 
-const StyledBtn = (props: any) => (
+const PositionedButton = (props: any) => (
     <View style={[styles.btn, props.style]}>
         <Button {...props} />
     </View>
@@ -13,4 +13,4 @@ const styles = StyleSheet.create({
     }
 });
 
-export default StyledBtn;
+export default PositionedButton;

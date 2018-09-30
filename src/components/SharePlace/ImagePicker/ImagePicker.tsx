@@ -1,13 +1,13 @@
 import * as React from 'react';
 import {Image, ImageSourcePropType, StyleSheet, View} from "react-native";
-import StyledBtn from "../../UI/StyledBtn/StyledBtn";
+import PositionedButton from "../../UI/PositionedButton/PositionedButton";
 
 const ImagePicker = ({ image }: Props) => (
     <React.Fragment>
         <View style={styles.placeholder}>
             <Image source={image} style={styles.preview} />
         </View>
-        <StyledBtn title="Pick Image" onPress={() => {}} />
+        <PositionedButton title="Pick Image" onPress={() => {}} />
     </React.Fragment>
 );
 

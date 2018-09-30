@@ -1,5 +1,5 @@
 import * as React from 'react';
-import StyledBtn from "../../UI/StyledBtn/StyledBtn";
+import PositionedButton from "../../UI/PositionedButton/PositionedButton";
 import {Image, ImageSourcePropType, StyleSheet, View} from "react-native";
 
 const LocationPicker = ({ location }: Props) => (
@@ -7,7 +7,7 @@ const LocationPicker = ({ location }: Props) => (
         <View style={styles.placeholder}>
             <Image source={location} style={styles.preview} />
         </View>
-        <StyledBtn title="Locate Me" onPress={() => {}} />
+        <PositionedButton title="Locate Me" onPress={() => {}} />
     </React.Fragment>
 );
 

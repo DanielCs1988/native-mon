@@ -3,7 +3,7 @@ import {View, StyleSheet, ScrollView} from "react-native";
 import Header from "../UI/Header/Header";
 import imagePlaceholder from "../../assets/background.jpg";
 import ImagePicker from "./ImagePicker/ImagePicker";
-import StyledBtn from "../UI/StyledBtn/StyledBtn";
+import PositionedButton from "../UI/PositionedButton/PositionedButton";
 import {Navigator} from "react-native-navigation";
 import LocationPicker from "./LocationPicker/LocationPicker";
 import Input from "../UI/Input/Input";
@@ -21,7 +21,6 @@ class SharePlace extends React.Component<Props, {}> {
             }
         });
     }
-
 
     newPlaceHandler = () => {
         if (this.state.placeName.trim().length > 0) {
@@ -42,7 +41,7 @@ class SharePlace extends React.Component<Props, {}> {
                         value={this.state.placeName}
                         onChangeText={(placeName: string) => this.setState({ placeName })}
                     />
-                    <StyledBtn title="Share the Place!" onPress={this.newPlaceHandler} />
+                    <PositionedButton title="Share the Place!" onPress={this.newPlaceHandler} />
                 </View>
             </ScrollView>
         );
