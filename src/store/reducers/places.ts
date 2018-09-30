@@ -1,11 +1,9 @@
 import { PlaceState } from "../types";
-import {ADD_PLACE, DESELECT_PLACE, PlaceActions, REMOVE_PLACE, SELECT_PLACE} from "../actions/places";
-// @ts-ignore
+import { ADD_PLACE, PlaceActions, REMOVE_PLACE } from "../actions/places";
 import SmexyImage from '../../assets/edinburgh-castle.jpg';
 
 export const initialState: PlaceState = {
-    places: [],
-    selectedPlace: null
+    places: []
 };
 
 const placeReducer = (state = initialState, action: PlaceActions) => {
@@ -20,21 +18,9 @@ const placeReducer = (state = initialState, action: PlaceActions) => {
                 }]
             };
         case REMOVE_PLACE:
-            const key = state.selectedPlace ? state.selectedPlace.key : null;
             return {
                 ...state,
-                places: state.places.filter(place => place.key !== key),
-                selectedPlace: null
-            };
-        case SELECT_PLACE:
-            return {
-                ...state,
-                selectedPlace: state.places.find(place => place.key === action.payload) || null
-            };
-        case DESELECT_PLACE:
-            return {
-                ...state,
-                selectedPlace: null
+                places: state.places.filter(place => place.key !== action.payload)
             };
         default:
             return state;

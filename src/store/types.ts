@@ -3,7 +3,6 @@ import {PlaceActions} from "./actions/places";
 
 export interface PlaceState {
     places: Place[];
-    selectedPlace: Place | null;
 }
 
 export interface AppState {

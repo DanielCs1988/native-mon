@@ -1,8 +1,8 @@
 import React from 'react';
 import {View, Text, Image, StyleSheet, TouchableOpacity, ImageURISource} from "react-native";
 
-const Place = ({ name, image, onClick }: Props) => (
-    <TouchableOpacity onPress={onClick}>
+const Place = ({ name, image, onSelect }: Props) => (
+    <TouchableOpacity onPress={onSelect}>
         <View style={styles.place}>
             <Image source={image as ImageURISource} style={styles.placeImage} />
             <Text>{name}</Text>
@@ -13,7 +13,7 @@ const Place = ({ name, image, onClick }: Props) => (
 export interface Props {
     name: string;
     image: string;
-    onClick: () => void;
+    onSelect: () => void;
 }
 
 const styles = StyleSheet.create({
