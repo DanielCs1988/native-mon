@@ -7,10 +7,18 @@ import PositionedButton from "../UI/PositionedButton/PositionedButton";
 import {Navigator} from "react-native-navigation";
 import LocationPicker from "./LocationPicker/LocationPicker";
 import Input from "../UI/Input/Input";
+import {validate} from "../../utils";
 
-class SharePlace extends React.Component<Props, {}> {
+class SharePlace extends React.Component<Props, any> {
     state = {
-        placeName: ''
+        placeName: {
+            value: '',
+            valid: false,
+            touched: false,
+            rules: {
+                minLength: 1
+            }
+        }
     };
 
     constructor(props: Props) {
@@ -22,14 +30,24 @@ class SharePlace extends React.Component<Props, {}> {
         });
     }
 
+    changeHandler = (placeName: string) => {
+        this.setState(prevState => ({
+            placeName: {
+                ...prevState.placeName,
+                value: placeName,
+                valid: validate(placeName, prevState.placeName.rules),
+                touched: true
+            }
+        }));
+    };
+
     newPlaceHandler = () => {
-        if (this.state.placeName.trim().length > 0) {
-            this.props.onNewPlace(this.state.placeName);
-            this.setState({ placeName: '' });
-        }
+        this.props.onNewPlace(this.state.placeName.value);
+        this.setState({ placeName: '' });
     };
 
     render() {
+        const { placeName } = this.state;
         return (
             <ScrollView>
                 <View style={styles.container}>
@@ -38,10 +56,16 @@ class SharePlace extends React.Component<Props, {}> {
                     <LocationPicker location={imagePlaceholder} />
                     <Input
                         placeholder="An awesome place..."
-                        value={this.state.placeName}
-                        onChangeText={(placeName: string) => this.setState({ placeName })}
+                        value={placeName.value}
+                        valid={placeName.valid}
+                        touched={placeName.touched}
+                        onChangeText={this.changeHandler}
                     />
-                    <PositionedButton title="Share the Place!" onPress={this.newPlaceHandler} />
+                    <PositionedButton
+                        title="Share the Place!"
+                        onPress={this.newPlaceHandler}
+                        disabled={!this.state.placeName.valid}
+                    />
                 </View>
             </ScrollView>
         );

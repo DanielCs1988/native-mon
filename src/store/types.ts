@@ -1,15 +1,21 @@
 import {Place} from "../models";
 import {PlaceActions} from "./actions/places";
+import {AuthActions} from "./actions/auth";
 
 export interface PlaceState {
     places: Place[];
 }
 
-export interface AppState {
-    places: PlaceState;
+export interface AuthState {
+
 }
 
-export type AppActions = PlaceActions;
+export interface AppState {
+    places: PlaceState;
+    auth: AuthState;
+}
+
+export type AppActions = PlaceActions | AuthActions;
 
 type FunctionType = (...args: any[]) => any;
 type ActionCreatorsMapObject = {
