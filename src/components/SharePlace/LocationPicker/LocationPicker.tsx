@@ -7,7 +7,7 @@ const LocationPicker = ({ location }: Props) => (
         <View style={styles.placeholder}>
             <Image source={location} style={styles.preview} />
         </View>
-        <StyledBtn title="Locate Me" />
+        <StyledBtn title="Locate Me" onPress={() => {}} />
     </React.Fragment>
 );
 

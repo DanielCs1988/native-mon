@@ -7,7 +7,7 @@ const ImagePicker = ({ image }: Props) => (
         <View style={styles.placeholder}>
             <Image source={image} style={styles.preview} />
         </View>
-        <StyledBtn title="Pick Image" />
+        <StyledBtn title="Pick Image" onPress={() => {}} />
     </React.Fragment>
 );
 
