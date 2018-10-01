@@ -1,24 +1,30 @@
 import { PlaceState } from "../types";
-import { ADD_PLACE, PlaceActions, REMOVE_PLACE } from "../actions/places";
-import SmexyImage from '../../assets/edinburgh-castle.jpg';
+import * as fromActions from "../actions/places";
 
 export const initialState: PlaceState = {
-    places: []
+    places: [],
+    loading: false
 };
 
-const placeReducer = (state = initialState, action: PlaceActions) => {
+const placeReducer = (state = initialState, action: fromActions.PlaceActions) => {
     switch (action.type) {
-        case ADD_PLACE:
+        case fromActions.ADD_PLACE_SUCCESS:
             return {
                 ...state,
-                places: [...state.places, {
-                    key: Math.random().toString(),
-                    name: action.payload.name,
-                    image: SmexyImage,
-                    location: action.payload.location
-                }]
+                places: [...state.places, action.payload],
+                loading: false
             };
-        case REMOVE_PLACE:
+        case fromActions.ADD_PLACE_FAILED:
+            return {
+                ...state,
+                loading: false
+            };
+        case fromActions.ADD_PLACE_STARTED:
+            return {
+                ...state,
+                loading: true
+            };
+        case fromActions.REMOVE_PLACE:
             return {
                 ...state,
                 places: state.places.filter(place => place.key !== action.payload)

@@ -4,7 +4,7 @@ import {View, Text, Image, StyleSheet, TouchableOpacity, ImageURISource} from "r
 const Place = ({ name, image, onSelect }: Props) => (
     <TouchableOpacity onPress={onSelect}>
         <View style={styles.place}>
-            <Image source={image as ImageURISource} style={styles.placeImage} />
+            <Image source={image} style={styles.placeImage} />
             <Text>{name}</Text>
         </View>
     </TouchableOpacity>
@@ -12,7 +12,7 @@ const Place = ({ name, image, onSelect }: Props) => (
 
 export interface Props {
     name: string;
-    image: string;
+    image: ImageURISource;
     onSelect: () => void;
 }
 

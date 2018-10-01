@@ -1,14 +1,14 @@
 import * as React from 'react';
-import {View, StyleSheet, ScrollView} from "react-native";
+import {View, StyleSheet, ScrollView, ImageURISource} from "react-native";
 import Header from "../UI/Header/Header";
-import imagePlaceholder from "../../assets/background.jpg";
-import ImagePicker from "./ImagePicker/ImagePicker";
+import ImagePickerForm from "./ImagePicker/ImagePickerForm";
 import PositionedButton from "../UI/PositionedButton/PositionedButton";
 import {Navigator} from "react-native-navigation";
 import LocationPicker from "./LocationPicker/LocationPicker";
 import Input from "../UI/Input/Input";
 import {validate} from "../../utils";
 import {LatLng} from "react-native-maps";
+import {Place} from "../../models";
 
 class SharePlace extends React.Component<Props, any> {
     state = {
@@ -21,6 +21,10 @@ class SharePlace extends React.Component<Props, any> {
             }
         },
         location: {
+            value: null,
+            valid: false
+        },
+        image: {
             value: null,
             valid: false
         }
@@ -52,24 +56,33 @@ class SharePlace extends React.Component<Props, any> {
                 value: coordinates,
                 valid: true
             }
-        })
+        });
+    };
+
+    imagePickedHandler = (image: ImageURISource) => {
+        this.setState({
+            image: {
+                value: image,
+                valid: true
+            }
+        });
     };
 
     newPlaceHandler = () => {
-        this.props.onNewPlace(
-            this.state.placeName.value,
-            this.state.location.value!
-        );
-        this.setState({ placeName: '' });
+        this.props.onNewPlace({
+            name: this.state.placeName.value,
+            image: this.state.image.value!,
+            location: this.state.location.value!
+        });
     };
 
     render() {
-        const { placeName, location } = this.state;
+        const { placeName, location, image } = this.state;
         return (
             <ScrollView>
                 <View style={styles.container}>
                     <Header>Share a place with us!</Header>
-                    <ImagePicker image={imagePlaceholder} />
+                    <ImagePickerForm onImagePicked={this.imagePickedHandler} />
                     <LocationPicker onLocationPicked={this.locationPickedHandler} />
                     <Input
                         placeholder="An awesome place..."
@@ -81,7 +94,7 @@ class SharePlace extends React.Component<Props, any> {
                     <PositionedButton
                         title="Share the Place!"
                         onPress={this.newPlaceHandler}
-                        disabled={!(placeName.valid && location.valid)}
+                        disabled={!(placeName.valid && location.valid && image.valid)}
                     />
                 </View>
             </ScrollView>
@@ -90,7 +103,7 @@ class SharePlace extends React.Component<Props, any> {
 }
 
 export interface Props {
-    onNewPlace: (name: string, location: LatLng) => void;
+    onNewPlace: (place: Place) => void;
     navigator: Navigator;
 }
 

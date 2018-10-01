@@ -4,6 +4,7 @@ import {AuthActions} from "./actions/auth";
 
 export interface PlaceState {
     places: Place[];
+    loading: boolean;
 }
 
 export interface AuthState {

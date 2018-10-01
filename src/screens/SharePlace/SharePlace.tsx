@@ -1,10 +1,10 @@
 import {Actions} from "../../store/actions/places";
 import {connect} from "react-redux";
 import SharePlace from "../../components/SharePlace/SharePlace";
-import {LatLng} from "react-native-maps";
+import {Place} from "../../models";
 
 const mapDispatchToProps = (dispatch: Function) => ({
-    onNewPlace: (name: string, location: LatLng) => dispatch(Actions.addPlace(name, location)),
+    onNewPlace: (place: Place) => dispatch(Actions.initAddPlace(place)),
 });
 
 export default connect(
