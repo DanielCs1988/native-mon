@@ -8,7 +8,10 @@ export interface PlaceState {
 }
 
 export interface AuthState {
-
+    token: string | null;
+    userId: string | null;
+    expiresIn: number | null;
+    loading: boolean;
 }
 
 export interface AppState {

@@ -11,7 +11,7 @@ Navigation.registerComponent('native-mon.AuthScreen', () => AuthScreen, store, P
 Navigation.registerComponent('native-mon.SharePlace', () => SharePlaceScreen, store, Provider);
 Navigation.registerComponent('native-mon.FindPlace', () => FindPlaceScreen, store, Provider);
 Navigation.registerComponent('native-mon.PlaceDetailScreen', () => PlaceDetails, store, Provider);
-Navigation.registerComponent('native-mon.SideDrawer', () => SideDrawer);
+Navigation.registerComponent('native-mon.SideDrawer', () => SideDrawer, store, Provider);
 
 Navigation.startSingleScreenApp({
     screen: {

@@ -8,8 +8,8 @@ import ResponsiveStyle from "../../hoc/ResponsiveStyle/ResponsiveStyle";
 import withResponsivity from "../../hoc/withResponsivity/withResponsivity";
 import styles from "./Auth.styles";
 import {validate} from "../../utils";
-import startMainTabs from "../../screens/startMainTabs/startMainTabs";
-import {AuthData} from "../../models";
+import {Credentials} from "../../models";
+import Loader from "../../hoc/Loader/Loader";
 
 class AuthScreen extends React.Component<Props, any> {
     state = {
@@ -42,12 +42,16 @@ class AuthScreen extends React.Component<Props, any> {
         }
     };
 
-    loginHandler = () => {
-        this.props.onLogin({
+    authHandler = () => {
+        const credentials = {
             email: this.state.formData.email.value,
             password: this.state.formData.password.value
-        });
-        startMainTabs();
+        };
+        if (this.state.onLoginPage) {
+            this.props.onLogin(credentials);
+        } else {
+            this.props.onSignUp(credentials);
+        }
     };
 
     changeHandler = (inputName: string, newValue: string) => {
@@ -124,14 +128,16 @@ class AuthScreen extends React.Component<Props, any> {
                                         />
                                 }
                             </ResponsiveStyle>
-                            <StyledButton
-                                onPress={this.loginHandler}
-                                btnStyle={styles.button}
-                                // disabled={!(
-                                //     email.valid && password.valid &&
-                                //     (onLoginPage || confirmPassword.valid)
-                                // )}
-                            >Submit</StyledButton>
+                            <Loader loading={this.props.loading}>
+                                <StyledButton
+                                    onPress={this.authHandler}
+                                    btnStyle={styles.button}
+                                    disabled={!(
+                                        email.valid && password.valid &&
+                                        (onLoginPage || confirmPassword.valid)
+                                    )}
+                                >Submit</StyledButton>
+                            </Loader>
                         </View>
                     </TouchableWithoutFeedback>
                 </KeyboardAvoidingView>
@@ -142,7 +148,9 @@ class AuthScreen extends React.Component<Props, any> {
 
 export interface Props {
     viewMode: string;
-    onLogin: (authData: AuthData) => void;
+    loading: boolean;
+    onLogin: (credentials: Credentials) => void;
+    onSignUp: (credentials: Credentials) => void;
 }
 
 export default withResponsivity(AuthScreen);

@@ -8,7 +8,12 @@ export interface Place {
     location: LatLng;
 }
 
-export interface AuthData {
+export interface Credentials {
     email: string;
     password: string;
+}
+export interface AuthPayload {
+    token: string;
+    userId: string;
+    expiresIn: number;
 }

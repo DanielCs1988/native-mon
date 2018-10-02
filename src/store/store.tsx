@@ -3,7 +3,7 @@ import createSagaMiddleware from 'redux-saga';
 import placeReducer from "./reducers/places";
 import {AppState} from "./types";
 import authReducer from "./reducers/auth";
-import {placesSagas} from "./effects/places";
+import { rootSaga } from "./rootSaga";
 
 const rootReducer = combineReducers({
     places: placeReducer,
@@ -18,6 +18,6 @@ const store: Store<AppState> = createStore(rootReducer, composeEnhancers(
     applyMiddleware(sagaMiddleware)
 ));
 
-sagaMiddleware.run(placesSagas);
+sagaMiddleware.run(rootSaga);
 
 export default store;
