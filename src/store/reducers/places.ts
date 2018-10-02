@@ -8,6 +8,11 @@ export const initialState: PlaceState = {
 
 const placeReducer = (state = initialState, action: fromActions.PlaceActions) => {
     switch (action.type) {
+        case fromActions.GET_PLACES_SUCCESS:
+            return {
+                ...state,
+                places: action.payload
+            };
         case fromActions.ADD_PLACE_SUCCESS:
             return {
                 ...state,
@@ -24,10 +29,15 @@ const placeReducer = (state = initialState, action: fromActions.PlaceActions) =>
                 ...state,
                 loading: true
             };
-        case fromActions.REMOVE_PLACE:
+        case fromActions.REMOVE_PLACE_SUCESS:
             return {
                 ...state,
                 places: state.places.filter(place => place.key !== action.payload)
+            };
+        case fromActions.REMOVE_PLACE_FAILED:
+            return {
+                ...state,
+                places: [...state.places, action.payload]
             };
         default:
             return state;

@@ -8,28 +8,28 @@ import {PlatformIcon} from "../../utils";
 import withResponsivity from "../../hoc/withResponsivity/withResponsivity";
 import styles from "./PlaceDetails.styles";
 
-const PlaceDetails = ({ place: { key, name, image, location }, viewMode, onRemovePlace, navigator }: Props) => (
+const PlaceDetails = ({ place, viewMode, onRemovePlace, navigator }: Props) => (
     <View style={[styles.container, viewMode === 'landscape' ? styles.landscape : null]}>
         <View style={styles.imageAndMapContainer}>
             <View style={styles.subContainer}>
-                <Image source={image as ImageURISource} style={styles.placeImage}/>
+                <Image source={place.image as ImageURISource} style={styles.placeImage}/>
             </View>
             <View style={styles.subContainer}>
                 <MapView style={styles.map} initialRegion={{
-                    ...location,
+                    ...place.location,
                     latitudeDelta: 0.0122,
                     longitudeDelta: Dimensions.get('window').width / Dimensions.get('window').height * 0.0122
                 }}>
-                    <Marker coordinate={location} />
+                    <Marker coordinate={place.location} />
                 </MapView>
             </View>
         </View>
         <View style={styles.subContainer}>
-            <Text style={styles.placeName}>{name}</Text>
+            <Text style={styles.placeName}>{place.name}</Text>
             <IconButton
                 icon={PlatformIcon('trash')} color="red" size={30} style={styles.deleteBtn}
                 onClick={() => {
-                    onRemovePlace(key);
+                    onRemovePlace(place);
                     navigator.pop({
                         animationType: Platform.OS === 'android' ? 'slide-horizontal' : 'fade'
                     });
@@ -42,7 +42,7 @@ const PlaceDetails = ({ place: { key, name, image, location }, viewMode, onRemov
 export interface Props {
     place: Place;
     viewMode: string;
-    onRemovePlace: (key: string) => void;
+    onRemovePlace: (place: Place) => void;
     navigator: Navigator;
 }
 

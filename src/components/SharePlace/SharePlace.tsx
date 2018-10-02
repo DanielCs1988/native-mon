@@ -9,6 +9,7 @@ import Input from "../UI/Input/Input";
 import {validate} from "../../utils";
 import {LatLng} from "react-native-maps";
 import {Place} from "../../models";
+import Loader from "../../hoc/Loader/Loader";
 
 class SharePlace extends React.Component<Props, any> {
     state = {
@@ -91,11 +92,13 @@ class SharePlace extends React.Component<Props, any> {
                         touched={placeName.touched}
                         onChangeText={this.changeHandler}
                     />
-                    <PositionedButton
-                        title="Share the Place!"
-                        onPress={this.newPlaceHandler}
-                        disabled={!(placeName.valid && location.valid && image.valid)}
-                    />
+                    <Loader loading={this.props.loading}>
+                        <PositionedButton
+                            title="Share the Place!"
+                            onPress={this.newPlaceHandler}
+                            disabled={!(placeName.valid && location.valid && image.valid)}
+                        />
+                    </Loader>
                 </View>
             </ScrollView>
         );
@@ -103,6 +106,7 @@ class SharePlace extends React.Component<Props, any> {
 }
 
 export interface Props {
+    loading: boolean;
     onNewPlace: (place: Place) => void;
     navigator: Navigator;
 }

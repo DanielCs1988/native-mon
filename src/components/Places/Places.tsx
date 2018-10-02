@@ -1,9 +1,10 @@
 import React from 'react';
-import {Animated, Dimensions, FlatList, StyleSheet, View} from "react-native";
+import {Animated, Dimensions, FlatList, View} from "react-native";
 import Place from "./Place/Place";
 import { Place as IPlace } from "../../models";
 import {Navigator} from "react-native-navigation";
 import StyledButton from "../UI/StyledButton/StyledButton";
+import styles from "./Places.styles";
 
 class Places extends React.Component<Props, State> {
     state = {
@@ -18,6 +19,10 @@ class Places extends React.Component<Props, State> {
                 props.navigator.toggleDrawer({ side: 'left' });
             }
         });
+    }
+
+    componentDidMount() {
+        this.props.getPlaces();
     }
 
     placesSearchHandler = () => {
@@ -97,32 +102,11 @@ class Places extends React.Component<Props, State> {
 export interface Props {
     places: IPlace[];
     navigator: Navigator;
+    getPlaces: () => void;
 }
 export interface State {
     placesLoaded: boolean;
     animationTimer: Animated.Value;
 }
-
-const styles = StyleSheet.create({
-    listContainer: {
-        width: '100%'
-    },
-    buttonContainer: {
-        flex: 1,
-        justifyContent: 'center',
-        alignItems: 'center'
-    },
-    searchButton: {
-        borderColor: 'blue',
-        borderWidth: 3,
-        borderRadius: 50,
-        padding: 20
-    },
-    searchButtonText: {
-        color: 'blue',
-        fontSize: 26,
-        fontWeight: 'bold'
-    }
-});
 
 export default Places;
