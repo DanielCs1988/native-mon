@@ -42,6 +42,10 @@ class AuthScreen extends React.Component<Props, any> {
         }
     };
 
+    componentDidMount() {
+        this.props.trySignIn();
+    }
+
     authHandler = () => {
         const credentials = {
             email: this.state.formData.email.value,
@@ -151,6 +155,7 @@ export interface Props {
     loading: boolean;
     onLogin: (credentials: Credentials) => void;
     onSignUp: (credentials: Credentials) => void;
+    trySignIn: () => void;
 }
 
 export default withResponsivity(AuthScreen);

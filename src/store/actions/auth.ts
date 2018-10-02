@@ -2,6 +2,7 @@ import {createAction} from "../action-creator";
 import {ActionsUnion} from "../types";
 import {AuthPayload, Credentials} from "../../models";
 
+export const AUTO_SIGN_IN = 'AUTO_SIGN_IN';
 export const INIT_SIGN_UP = 'INIT_SIGN_UP';
 export const INIT_SIGN_IN = 'INIT_SIGN_IN';
 export const AUTH_STARTED = 'AUTH_STARTED';
@@ -12,6 +13,7 @@ export const INIT_LOGOUT = 'INIT_LOGOUT' ;
 export const LOGOUT = 'LOGOUT';
 
 export const Actions = {
+    autoSignIn: () => createAction(AUTO_SIGN_IN),
     initSignUp: (credentials: Credentials) => createAction(INIT_SIGN_UP, credentials),
     initSignIn: (credentials: Credentials) => createAction(INIT_SIGN_IN, credentials),
     authStarted: () => createAction(AUTH_STARTED),

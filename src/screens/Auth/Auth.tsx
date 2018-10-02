@@ -8,7 +8,8 @@ const mapStateToProps = ({ auth: { loading } }: AppState) => ({ loading });
 
 const mapDispatchToProps = (dispatch: any) => ({
     onLogin: (authData: Credentials) => dispatch(Actions.initSignIn(authData)),
-    onSignUp: (authData: Credentials) => dispatch(Actions.initSignUp(authData))
+    onSignUp: (authData: Credentials) => dispatch(Actions.initSignUp(authData)),
+    trySignIn: () => dispatch(Actions.autoSignIn())
 });
 
 export default connect(
