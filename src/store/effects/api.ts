@@ -1,10 +1,12 @@
 import axios from 'axios';
-import {Credentials, Place} from "../../models";
+import {AuthPayload, Credentials, Place} from "../../models";
 import {ImageURISource} from "react-native";
+import { stringify } from "qs";
 
 const firebaseBaseUrl = 'https://best-places-2k19.firebaseio.com';
 const imageHostingUrl = 'https://us-central1-best-places-2k19.cloudfunctions.net/storeImage';
 const authUrl = 'https://www.googleapis.com/identitytoolkit/v3/relyingparty';
+const refreshTokenUrl = 'https://securetoken.googleapis.com/v1/token';
 const authApiKey = '';
 
 export const fetchPlaces = async (token: string) => {
@@ -36,12 +38,28 @@ export const removePlace = (id: string, token: string) => {
     });
 };
 
-export const authenticate = async (credentials: Credentials, isLogin: boolean) => {
+export const authenticate = async (credentials: Credentials, isLogin: boolean): Promise<AuthPayload> => {
     const path = isLogin ? 'verifyPassword' : 'signupNewUser';
-    const { data: { idToken, localId, expiresIn } } = await axios.post(`${authUrl}/${path}`, {
+    const { data: { idToken, localId, expiresIn, refreshToken } } = await axios.post(`${authUrl}/${path}`, {
         ...credentials, returnSecureToken: true
     }, {
         params: { key: authApiKey }
     });
-    return { token: idToken, userId: localId, expiresIn };
+    return { token: idToken, userId: localId, expiresIn, refreshToken };
+};
+
+export const fetchNewToken = async (rfToken: string): Promise<AuthPayload> => {
+    const { data: { id_token, user_id, expires_in, refresh_token } } = await axios.post(refreshTokenUrl, stringify({
+        grant_type: 'refresh_token',
+        refresh_token: rfToken
+    }), {
+        params: { key: authApiKey },
+        headers: { 'Content-Type': 'application/x-www-form-urlencoded' }
+    });
+    return {
+        token: id_token,
+        userId: user_id,
+        expiresIn: expires_in,
+        refreshToken: refresh_token
+    };
 };

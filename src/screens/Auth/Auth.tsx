@@ -3,6 +3,14 @@ import {AppState} from "../../store/types";
 import {Credentials} from "../../models";
 import {Actions} from "../../store/actions/auth";
 import Auth from "../../components/Auth/Auth";
+import {Navigation} from "react-native-navigation";
+
+export const runApplication = () => Navigation.startSingleScreenApp({
+    screen: {
+        screen: 'native-mon.AuthScreen',
+        title: 'Login'
+    }
+});
 
 const mapStateToProps = ({ auth: { loading } }: AppState) => ({ loading });
 

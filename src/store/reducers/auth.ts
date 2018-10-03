@@ -33,12 +33,11 @@ const authReducer = (state = initialState, action: fromActions.AuthActions) => {
     }
 };
 
-export const getToken = (state: AppState) => {
-    const token = state.auth.token;
-    if (!token) {
+export const getTokenAndExpiry = ({ auth: { token, expiresIn } }: AppState) => {
+    if (!(token && expiresIn)) {
         throw new Error('Token not found!');
     }
-    return token;
+    return { token, expiresIn };
 };
 
 export default authReducer;

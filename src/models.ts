@@ -15,5 +15,6 @@ export interface Credentials {
 export interface AuthPayload {
     token: string;
     userId: string;
-    expiresIn: number;
+    expiresIn?: number;
+    refreshToken?: string;
 }
