@@ -3,16 +3,10 @@ import {AppState} from "../../store/types";
 import {Credentials} from "../../models";
 import {Actions} from "../../store/actions/auth";
 import Auth from "../../components/Auth/Auth";
-import {Navigation} from "react-native-navigation";
+import {compose} from "recompose";
+import withResponsivity from "../../hoc/withResponsivity/withResponsivity";
 
-export const runApplication = () => Navigation.startSingleScreenApp({
-    screen: {
-        screen: 'native-mon.AuthScreen',
-        title: 'Login'
-    }
-});
-
-const mapStateToProps = ({ auth: { loading } }: AppState) => ({ loading });
+const mapStateToProps = ({ auth: { loading, token } }: AppState) => ({ loading, token });
 
 const mapDispatchToProps = (dispatch: any) => ({
     onLogin: (authData: Credentials) => dispatch(Actions.initSignIn(authData)),
@@ -20,7 +14,9 @@ const mapDispatchToProps = (dispatch: any) => ({
     trySignIn: () => dispatch(Actions.autoSignIn())
 });
 
-export default connect(
-    mapStateToProps,
-    mapDispatchToProps
-)(Auth);
+const enhance = compose<any, any>(
+    connect(mapStateToProps, mapDispatchToProps),
+    withResponsivity
+);
+
+export default enhance(Auth);

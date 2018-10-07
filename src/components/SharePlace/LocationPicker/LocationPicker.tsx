@@ -1,21 +1,29 @@
 import * as React from 'react';
 import PositionedButton from "../../UI/PositionedButton/PositionedButton";
-import {Dimensions, StyleSheet, View} from "react-native";
-import MapView, {Region, Marker, LatLng} from 'react-native-maps';
-import {createRef} from "react";
+import { Dimensions, StyleSheet, View } from "react-native";
+import MapView, { Marker, LatLng } from 'react-native-maps';
 
+const initialState = {
+    focusedLocation: {
+        latitude: 37.7900352,
+        longitude: -122.4013726,
+        latitudeDelta: 0.0122,
+        longitudeDelta: Dimensions.get('window').width / Dimensions.get('window').height * 0.0122
+    },
+    locationPicked: false
+};
+type State = Readonly<typeof initialState>;
+type Props = {
+    onLocationPicked: (coordinates: LatLng) => void;
+}
 class LocationPicker extends React.Component<Props, State> {
-    state = {
-        focusedLocation: {
-            latitude: 37.7900352,
-            longitude: -122.4013726,
-            latitudeDelta: 0.0122,
-            longitudeDelta: Dimensions.get('window').width / Dimensions.get('window').height * 0.0122
-        },
-        locationPicked: false
-    };
+    readonly state = initialState;
 
-    private map = createRef<MapView>();
+    private map = React.createRef<MapView>();
+
+    reset = () => {
+        this.setState(initialState);
+    };
     
     pickLocationHandler = ({ nativeEvent: { coordinate: { latitude, longitude } } }) => {
         this.map.current!.animateToRegion({
@@ -59,14 +67,6 @@ class LocationPicker extends React.Component<Props, State> {
             </View>
         );
     }
-}
-
-export interface Props {
-    onLocationPicked: (coordinates: LatLng) => void;
-}
-export interface State {
-    focusedLocation: Region;
-    locationPicked: boolean;
 }
 
 const styles = StyleSheet.create({

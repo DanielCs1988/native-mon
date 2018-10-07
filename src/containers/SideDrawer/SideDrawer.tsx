@@ -4,8 +4,21 @@ import IconButton from "../../components/UI/IconButton/IconButton";
 import {PlatformIcon} from "../../utils";
 import {connect} from "react-redux";
 import {Actions} from "../../store/actions/auth";
+import {NavProp} from "../../models";
+import {AppState} from "../../store/types";
+import {Routes} from "../../constants";
 
+type Props = NavProp & {
+    token: string | null;
+    onLogout: () => void;
+}
 class SideDrawer extends React.Component<Props, {}> {
+    componentDidUpdate() {
+        if (!this.props.token) {
+            this.props.navigation.navigate(Routes.AUTHENTICATION);
+        }
+    }
+
     render() {
         return (
             <View style={styles.container}>
@@ -21,10 +34,6 @@ class SideDrawer extends React.Component<Props, {}> {
     }
 }
 
-export interface Props {
-    onLogout: () => void;
-}
-
 const styles = StyleSheet.create({
     container: {
         paddingTop: 22,
@@ -37,8 +46,9 @@ const styles = StyleSheet.create({
     }
 });
 
+const mapStateToProps = ({ auth: { token } }: AppState) => ({ token });
 const mapDispatchToProps = (dispatch: Function) => ({
     onLogout: () => dispatch(Actions.initLogout())
 });
 
-export default connect(null, mapDispatchToProps)(SideDrawer);
+export default connect(mapStateToProps, mapDispatchToProps)(SideDrawer);

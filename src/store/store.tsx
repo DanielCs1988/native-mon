@@ -1,9 +1,12 @@
-import {applyMiddleware, combineReducers, compose, createStore, Store} from "redux";
+import * as React from 'react';
+import { applyMiddleware, combineReducers, compose, createStore, Store } from "redux";
+import { Provider } from "react-redux";
 import createSagaMiddleware from 'redux-saga';
-import placeReducer from "./reducers/places";
-import {AppState} from "./types";
-import authReducer from "./reducers/auth";
 import { rootSaga } from "./rootSaga";
+import authReducer from "./reducers/auth";
+import placeReducer from "./reducers/places";
+import { AppState } from "./types";
+import Router from '../router';
 
 const rootReducer = combineReducers({
     places: placeReducer,
@@ -20,4 +23,10 @@ const store: Store<AppState> = createStore(rootReducer, composeEnhancers(
 
 sagaMiddleware.run(rootSaga);
 
-export default store;
+const AppWithStore = () => (
+    <Provider store={store}>
+        <Router />
+    </Provider>
+);
+
+export default AppWithStore;

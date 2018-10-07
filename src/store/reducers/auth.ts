@@ -1,5 +1,5 @@
 import {AppState, AuthState} from "../types";
-import * as fromActions from "../actions/auth";
+import {ActionTypes, AuthActions} from "../actions/auth";
 
 export const initialState: AuthState = {
     token: null,
@@ -8,25 +8,25 @@ export const initialState: AuthState = {
     loading: false
 };
 
-const authReducer = (state = initialState, action: fromActions.AuthActions) => {
+const authReducer = (state = initialState, action: AuthActions) => {
     switch (action.type) {
-        case fromActions.AUTH_STARTED:
+        case ActionTypes.AUTH_STARTED:
             return {
                 ...state,
                 loading: true
             };
-        case fromActions.AUTH_SUCCESS:
+        case ActionTypes.AUTH_SUCCESS:
             return {
                 ...state,
                 ...action.payload,
                 loading: false
             };
-        case fromActions.AUTH_FAILED:
+        case ActionTypes.AUTH_FAILED:
             return {
                 ...state,
                 loading: false
             };
-        case fromActions.LOGOUT:
+        case ActionTypes.LOGOUT:
             return initialState;
         default:
             return state;

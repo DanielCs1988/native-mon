@@ -1,40 +1,47 @@
 import { PlaceState } from "../types";
-import * as fromActions from "../actions/places";
+import { PlaceActions, ActionTypes } from "../actions/places";
 
 export const initialState: PlaceState = {
     places: [],
-    loading: false
+    loading: false,
+    placeAdded: false
 };
 
-const placeReducer = (state = initialState, action: fromActions.PlaceActions) => {
+const placeReducer = (state = initialState, action: PlaceActions) => {
     switch (action.type) {
-        case fromActions.GET_PLACES_SUCCESS:
+        case ActionTypes.GET_PLACES_SUCCESS:
             return {
                 ...state,
                 places: action.payload
             };
-        case fromActions.ADD_PLACE_SUCCESS:
+        case ActionTypes.ADD_PLACE_SUCCESS:
             return {
                 ...state,
                 places: [...state.places, action.payload],
-                loading: false
+                loading: false,
+                placeAdded: true
             };
-        case fromActions.ADD_PLACE_FAILED:
+        case ActionTypes.ADD_PLACE_FAILED:
             return {
                 ...state,
                 loading: false
             };
-        case fromActions.ADD_PLACE_STARTED:
+        case ActionTypes.ADD_PLACE_RESET:
+            return {
+                ...state,
+                placeAdded: false
+            };
+        case ActionTypes.ADD_PLACE_STARTED:
             return {
                 ...state,
                 loading: true
             };
-        case fromActions.REMOVE_PLACE_SUCESS:
+        case ActionTypes.REMOVE_PLACE_SUCESS:
             return {
                 ...state,
                 places: state.places.filter(place => place.key !== action.payload)
             };
-        case fromActions.REMOVE_PLACE_FAILED:
+        case ActionTypes.REMOVE_PLACE_FAILED:
             return {
                 ...state,
                 places: [...state.places, action.payload]

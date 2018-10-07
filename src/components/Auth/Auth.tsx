@@ -5,45 +5,56 @@ import Header from "../../components/UI/Header/Header";
 import backgroundImage from "../../assets/background.jpg";
 import StyledButton from "../../components/UI/StyledButton/StyledButton";
 import ResponsiveStyle from "../../hoc/ResponsiveStyle/ResponsiveStyle";
-import withResponsivity from "../../hoc/withResponsivity/withResponsivity";
 import styles from "./Auth.styles";
 import {validate} from "../../utils";
-import {Credentials} from "../../models";
+import {Credentials, NavProp} from "../../models";
 import Loader from "../../hoc/Loader/Loader";
+import {Routes} from "../../constants";
 
-class AuthScreen extends React.Component<Props, any> {
-    state = {
-        onLoginPage: true,
-        formData: {
-            email: {
-                value: '',
-                valid: false,
-                touched: false,
-                rules: {
-                    isEmail: true
-                }
-            },
-            password: {
-                value: '',
-                valid: false,
-                touched: false,
-                rules: {
-                    minLength: 6
-                }
-            },
-            confirmPassword: {
-                value: '',
-                valid: false,
-                touched: false,
-                rules: {
-                    equalTo: ''
-                }
+const initialState = {
+    onLoginPage: true,
+    formData: {
+        email: {
+            value: '',
+            valid: false,
+            touched: false,
+            rules: {
+                isEmail: true
+            }
+        },
+        password: {
+            value: '',
+            valid: false,
+            touched: false,
+            rules: {
+                minLength: 6
+            }
+        },
+        confirmPassword: {
+            value: '',
+            valid: false,
+            touched: false,
+            rules: {
+                equalTo: ''
             }
         }
-    };
+    }
+};
+type State = Readonly<typeof initialState>;
+type Props = NavProp & {
+    viewMode: string;
+    loading: boolean;
+    token: string;
+    onLogin: (credentials: Credentials) => void;
+    onSignUp: (credentials: Credentials) => void;
+};
+class AuthScreen extends React.Component<Props, State> {
+    readonly state = initialState;
 
-    componentDidMount() {
-        this.props.trySignIn();
+    componentDidUpdate() {
+        if (this.props.token) {
+            this.props.navigation.navigate(Routes.MAIN_APPLICATION);
+        }
     }
 
     authHandler = () => {
@@ -150,12 +161,4 @@ class AuthScreen extends React.Component<Props, any> {
     }
 }
 
-export interface Props {
-    viewMode: string;
-    loading: boolean;
-    onLogin: (credentials: Credentials) => void;
-    onSignUp: (credentials: Credentials) => void;
-    trySignIn: () => void;
-}
-
-export default withResponsivity(AuthScreen);
+export default AuthScreen;

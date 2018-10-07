@@ -1,12 +1,12 @@
-import {call, put, takeEvery, takeLatest} from "redux-saga/effects";
-import {Actions, INIT_ADD_PLACE, INIT_GET_PLACES, INIT_REMOVE_PLACE} from "../actions/places";
+import { call, put, takeEvery, takeLatest } from "redux-saga/effects";
 import * as Api from './api';
 import { getToken } from "./auth";
+import { Actions, ActionTypes } from "../actions/places";
 
 export function* placesSagas() {
-    yield takeLatest(INIT_GET_PLACES, getPlaces);
-    yield takeEvery(INIT_ADD_PLACE, sendPlace);
-    yield takeEvery(INIT_REMOVE_PLACE, removePlace);
+    yield takeLatest(ActionTypes.INIT_GET_PLACES, getPlaces);
+    yield takeEvery(ActionTypes.INIT_ADD_PLACE, sendPlace);
+    yield takeEvery(ActionTypes.INIT_REMOVE_PLACE, removePlace);
 }
 
 export function* getPlaces() {

@@ -3,13 +3,27 @@ import {Image, ImageSourcePropType, ImageURISource, StyleSheet, View} from "reac
 import ImagePicker from 'react-native-image-picker';
 import PositionedButton from "../../UI/PositionedButton/PositionedButton";
 
+type Props = {
+    onImagePicked: (image: ImageURISource) => void;
+}
+type State = {
+    pickedImage: ImageSourcePropType | null;
+}
 class ImagePickerForm extends React.Component<Props, State> {
     state = {
         pickedImage: null
     };
 
+    reset = () => {
+        this.setState({ pickedImage: null });
+    };
+
     pickImageHandler = () => {
-        ImagePicker.showImagePicker({ title: 'Pick an Image' }, res => {
+        ImagePicker.showImagePicker({
+            title: 'Pick an Image',
+            maxWidth: 800,
+            maxHeight: 600
+        }, res => {
             if (res.didCancel) { return; }
             if (res.error) { alert(res.error); }
             this.setState({
@@ -29,13 +43,6 @@ class ImagePickerForm extends React.Component<Props, State> {
             </React.Fragment>
         );
     }
-}
-
-export interface Props {
-    onImagePicked: (image: ImageURISource) => void;
-}
-export interface State {
-    pickedImage: ImageSourcePropType | null;
 }
 
 const styles = StyleSheet.create({

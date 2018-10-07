@@ -1,5 +1,6 @@
 import {LatLng} from "react-native-maps";
 import {ImageURISource} from "react-native";
+import {NavigationScreenProp} from "react-navigation";
 
 export interface Place {
     key?: string;
@@ -18,3 +19,7 @@ export interface AuthPayload {
     expiresIn?: number;
     refreshToken?: string;
 }
+
+export type NavProp = {
+    navigation: NavigationScreenProp<any, any>;
+};

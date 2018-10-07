@@ -1,31 +1,32 @@
 import React from 'react';
 import {Animated, Dimensions, FlatList, View} from "react-native";
 import Place from "./Place/Place";
-import { Place as IPlace } from "../../models";
-import {Navigator} from "react-native-navigation";
+import {NavProp, Place as IPlace} from "../../models";
 import StyledButton from "../UI/StyledButton/StyledButton";
 import styles from "./Places.styles";
+import {Routes} from "../../constants";
 
+const initialState = {
+    placesLoaded: false,
+    animationTimer: new Animated.Value(1)
+};
+type State = Readonly<typeof initialState>;
+type Props = NavProp & {
+    places: IPlace[];
+    getPlaces: () => void;
+};
 class Places extends React.Component<Props, State> {
-    state = {
-        placesLoaded: false,
-        animationTimer: new Animated.Value(1)
+    static navigationOptions = {
+        title: 'Find Place'
     };
 
-    constructor(props: Props) {
-        super(props);
-        props.navigator.setOnNavigatorEvent(event => {
-            if (event.type === 'NavBarButtonPress' && event.id === 'sideDrawerToggle') {
-                props.navigator.toggleDrawer({ side: 'left' });
-            }
-        });
-    }
+    readonly state = initialState;
 
     componentDidMount() {
         this.props.getPlaces();
     }
 
-    placesSearchHandler = () => {
+    private placesSearchHandler = () => {
         Animated.timing(this.state.animationTimer, {
             toValue: 0,
             duration: 500,
@@ -33,7 +34,7 @@ class Places extends React.Component<Props, State> {
         }).start(() => this.listLoaded());
     };
 
-    listLoaded = () => {
+    private listLoaded = () => {
         this.setState({ placesLoaded: true });
         Animated.timing(this.state.animationTimer, {
             toValue: 1,
@@ -43,7 +44,7 @@ class Places extends React.Component<Props, State> {
     };
 
     render() {
-        const { places, navigator } = this.props;
+        const { places, navigation } = this.props;
         const { animationTimer } = this.state;
         const btnAnimation = {
             opacity: animationTimer,
@@ -85,28 +86,13 @@ class Places extends React.Component<Props, State> {
                         <Place
                             name={place.name}
                             image={place.image}
-                            onSelect={() => navigator.push({
-                                screen: 'native-mon.PlaceDetailScreen',
-                                title: place.name,
-                                animationType: 'slide-horizontal',
-                                passProps: { place }
-                            })}
+                            onSelect={() => navigation.push(Routes.PLACE_DETAILS, { place })}
                         />
                     )}
                 />
             </Animated.View>
         );
     }
-}
-
-export interface Props {
-    places: IPlace[];
-    navigator: Navigator;
-    getPlaces: () => void;
-}
-export interface State {
-    placesLoaded: boolean;
-    animationTimer: Animated.Value;
 }
 
 export default Places;
