@@ -1,46 +1,59 @@
 import * as React from 'react';
 import {View, StyleSheet, ScrollView, ImageURISource} from "react-native";
-import Header from "../UI/Header/Header";
-import ImagePickerForm from "./ImagePicker/ImagePickerForm";
+import SplashScreen from 'react-native-splash-screen';
+import ImagePickerForm from "./ImagePickerForm/ImagePickerForm";
 import PositionedButton from "../UI/PositionedButton/PositionedButton";
-import {Navigator} from "react-native-navigation";
 import LocationPicker from "./LocationPicker/LocationPicker";
 import Input from "../UI/Input/Input";
 import {validate} from "../../utils";
 import {LatLng} from "react-native-maps";
-import {Place} from "../../models";
+import {NavProp, Place} from "../../models";
 import Loader from "../../hoc/Loader/Loader";
+import {createRef} from "react";
+import {Routes} from "../../constants";
 
-class SharePlace extends React.Component<Props, any> {
-    state = {
-        placeName: {
-            value: '',
-            valid: false,
-            touched: false,
-            rules: {
-                minLength: 1
-            }
-        },
-        location: {
-            value: null,
-            valid: false
-        },
-        image: {
-            value: null,
-            valid: false
+type Props = NavProp & {
+    loading: boolean;
+    placeAdded: boolean;
+    onNewPlace: (place: Place) => void;
+    resetAddPlace: () => void;
+}
+const initialState = {
+    placeName: {
+        value: '',
+        valid: false,
+        touched: false,
+        rules: {
+            minLength: 1
         }
-    };
+    },
+    location: {
+        value: null,
+        valid: false
+    },
+    image: {
+        value: null,
+        valid: false
+    }
+};
+class SharePlace extends React.Component<Props, any> {
+    readonly state = initialState;
 
-    constructor(props: Props) {
-        super(props);
-        props.navigator.setOnNavigatorEvent(event => {
-            if (event.type === 'NavBarButtonPress' && event.id === 'sideDrawerToggle') {
-                props.navigator.toggleDrawer({ side: 'left' });
-            }
-        });
+    private imagePickerForm = createRef<ImagePickerForm>();
+    private locationPicker = createRef<LocationPicker>();
+
+    componentDidMount() {
+        SplashScreen.hide();
     }
 
-    changeHandler = (placeName: string) => {
+    componentDidUpdate() {
+        if (this.props.placeAdded) {
+            this.props.resetAddPlace();
+            this.props.navigation.navigate(Routes.FIND_PLACE);
+        }
+    }
+
+    private changeHandler = (placeName: string) => {
         this.setState(prevState => ({
             placeName: {
                 ...prevState.placeName,
@@ -51,7 +64,7 @@ class SharePlace extends React.Component<Props, any> {
         }));
     };
 
-    locationPickedHandler = (coordinates: LatLng) => {
+    private locationPickedHandler = (coordinates: LatLng) => {
         this.setState({
             location: {
                 value: coordinates,
@@ -60,21 +73,24 @@ class SharePlace extends React.Component<Props, any> {
         });
     };
 
-    imagePickedHandler = (image: ImageURISource) => {
+    private imagePickedHandler = (image: ImageURISource) => {
         this.setState({
             image: {
                 value: image,
                 valid: true
             }
-        });
+        }, () => console.log('Callback can be called in SetState!'));
     };
 
-    newPlaceHandler = () => {
+    private newPlaceHandler = () => {
         this.props.onNewPlace({
             name: this.state.placeName.value,
             image: this.state.image.value!,
             location: this.state.location.value!
         });
+        this.setState(initialState);
+        this.imagePickerForm.current!.reset();
+        this.locationPicker.current!.reset();
     };
 
     render() {
@@ -82,9 +98,8 @@ class SharePlace extends React.Component<Props, any> {
         return (
             <ScrollView>
                 <View style={styles.container}>
-                    <Header>Share a place with us!</Header>
-                    <ImagePickerForm onImagePicked={this.imagePickedHandler} />
-                    <LocationPicker onLocationPicked={this.locationPickedHandler} />
+                    <ImagePickerForm onImagePicked={this.imagePickedHandler} ref={this.imagePickerForm} />
+                    <LocationPicker onLocationPicked={this.locationPickedHandler} ref={this.locationPicker} />
                     <Input
                         placeholder="An awesome place..."
                         value={placeName.value}
@@ -105,15 +120,10 @@ class SharePlace extends React.Component<Props, any> {
     }
 }
 
-export interface Props {
-    loading: boolean;
-    onNewPlace: (place: Place) => void;
-    navigator: Navigator;
-}
-
 const styles = StyleSheet.create({
     container: {
         flex: 1,
+        paddingTop: 15,
         alignItems: 'center'
     }
 });

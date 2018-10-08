@@ -1,10 +1,13 @@
 import * as React from 'react';
 import {Dimensions} from "react-native";
 
-const withResponsivity = (WrappedComponent: any) => class extends React.Component<{}, State> {
-    state = {
-        viewMode: Dimensions.get('window').width > Dimensions.get('window').height ? 'landscape' : 'portrait'
-    };
+const initialState = {
+    viewMode: Dimensions.get('window').width > Dimensions.get('window').height ? 'landscape' : 'portrait'
+};
+type State = Readonly<typeof initialState>;
+
+const withResponsivity = (WrappedComponent: any) => class extends React.Component<any, State> {
+    readonly state = initialState;
 
     constructor(props: any) {
         super(props);
@@ -15,7 +18,7 @@ const withResponsivity = (WrappedComponent: any) => class extends React.Componen
         Dimensions.removeEventListener('change', this.updateViewMode);
     }
 
-    updateViewMode = (dims: any) => {
+    private updateViewMode = (dims: any) => {
         this.setState({
             viewMode: dims.window.height > dims.window.width ? 'portrait' : 'landscape'
         });
@@ -25,9 +28,5 @@ const withResponsivity = (WrappedComponent: any) => class extends React.Componen
         return <WrappedComponent {...this.props} viewMode={this.state.viewMode} />;
     }
 };
-
-export interface State {
-    viewMode: string;
-}
 
 export default withResponsivity;
