@@ -2,8 +2,8 @@ export enum Routes {
     APP_LOADING = 'AppLoading',
     AUTHENTICATION = 'Authentication',
     MAIN_APPLICATION = 'MainApplication',
-    SHARE_PLACE_STACK = 'SharePlaceStack',
-    FIND_PLACE_STACK = 'FindPlaceStack',
+    SHARE_PLACE_STACK = 'Share Place',
+    FIND_PLACE_STACK = 'Find Place',
     SHARE_PLACE = 'SharePlace',
     FIND_PLACE = 'FindPlace',
     PLACE_DETAILS = 'PlaceDetails'

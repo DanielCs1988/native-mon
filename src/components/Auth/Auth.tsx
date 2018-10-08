@@ -1,5 +1,6 @@
 import * as React from 'react';
 import { View, ImageBackground, KeyboardAvoidingView, TouchableWithoutFeedback, Keyboard } from "react-native";
+import SplashScreen from 'react-native-splash-screen';
 import Input from "../../components/UI/Input/Input";
 import Header from "../../components/UI/Header/Header";
 import backgroundImage from "../../assets/background.jpg";
@@ -50,6 +51,10 @@ type Props = NavProp & {
 };
 class AuthScreen extends React.Component<Props, State> {
     readonly state = initialState;
+
+    componentDidMount() {
+        SplashScreen.hide();
+    }
 
     componentDidUpdate() {
         if (this.props.token) {

@@ -1,5 +1,5 @@
 import * as React from 'react';
-import {View, Text, ActivityIndicator, StyleSheet, AsyncStorage} from "react-native";
+import { AsyncStorage } from "react-native";
 import {NavProp} from "../../../models";
 import {Routes, StorageKeys} from "../../../constants";
 
@@ -29,21 +29,8 @@ class AppLoading extends React.Component<Props> {
     }
 
     render() {
-        return (
-            <View style={styles.container}>
-                <Text>Loading App...</Text>
-                <ActivityIndicator />
-            </View>
-        );
+        return null;
     }
 }
-
-const styles = StyleSheet.create({
-    container: {
-        flex: 1,
-        justifyContent: 'center',
-        alignItems: 'center'
-    }
-});
 
 export default AppLoading;

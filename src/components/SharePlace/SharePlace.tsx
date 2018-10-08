@@ -1,5 +1,6 @@
 import * as React from 'react';
 import {View, StyleSheet, ScrollView, ImageURISource} from "react-native";
+import SplashScreen from 'react-native-splash-screen';
 import ImagePickerForm from "./ImagePickerForm/ImagePickerForm";
 import PositionedButton from "../UI/PositionedButton/PositionedButton";
 import LocationPicker from "./LocationPicker/LocationPicker";
@@ -40,6 +41,10 @@ class SharePlace extends React.Component<Props, any> {
 
     private imagePickerForm = createRef<ImagePickerForm>();
     private locationPicker = createRef<LocationPicker>();
+
+    componentDidMount() {
+        SplashScreen.hide();
+    }
 
     componentDidUpdate() {
         if (this.props.placeAdded) {
