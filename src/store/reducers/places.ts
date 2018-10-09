@@ -4,7 +4,8 @@ import { PlaceActions, ActionTypes } from "../actions/places";
 export const initialState: PlaceState = {
     places: [],
     loading: false,
-    placeAdded: false
+    placeAdded: false,
+    error: null
 };
 
 const placeReducer = (state = initialState, action: PlaceActions) => {
@@ -12,7 +13,13 @@ const placeReducer = (state = initialState, action: PlaceActions) => {
         case ActionTypes.GET_PLACES_SUCCESS:
             return {
                 ...state,
-                places: action.payload
+                places: action.payload,
+                error: null
+            };
+        case ActionTypes.GET_PLACES_FAILED:
+            return {
+                ...state,
+                error: action.payload
             };
         case ActionTypes.ADD_PLACE_SUCCESS:
             return {
@@ -24,27 +31,31 @@ const placeReducer = (state = initialState, action: PlaceActions) => {
         case ActionTypes.ADD_PLACE_FAILED:
             return {
                 ...state,
-                loading: false
+                loading: false,
+                error: action.payload
             };
         case ActionTypes.ADD_PLACE_RESET:
             return {
                 ...state,
-                placeAdded: false
+                placeAdded: false,
+                error: null
             };
         case ActionTypes.ADD_PLACE_STARTED:
             return {
                 ...state,
                 loading: true
             };
-        case ActionTypes.REMOVE_PLACE_SUCESS:
+        case ActionTypes.REMOVE_PLACE_SUCCESS:
             return {
                 ...state,
-                places: state.places.filter(place => place.key !== action.payload)
+                places: state.places.filter(place => place.key !== action.payload),
+                error: null
             };
         case ActionTypes.REMOVE_PLACE_FAILED:
             return {
                 ...state,
-                places: [...state.places, action.payload]
+                places: [...state.places, action.payload.place],
+                error: action.payload.reason
             };
         default:
             return state;

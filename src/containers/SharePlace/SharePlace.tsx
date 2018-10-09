@@ -4,7 +4,7 @@ import SharePlace from "../../components/SharePlace/SharePlace";
 import {Place} from "../../models";
 import {AppState} from "../../store/types";
 
-const mapStateToProps = ({ places: { loading, placeAdded } }: AppState) => ({ loading, placeAdded });
+const mapStateToProps = ({ places: { loading, placeAdded, error } }: AppState) => ({ loading, placeAdded, error });
 
 const mapDispatchToProps = (dispatch: Function) => ({
     onNewPlace: (place: Place) => dispatch(Actions.initAddPlace(place)),

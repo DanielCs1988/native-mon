@@ -1,7 +1,7 @@
 import * as React from 'react';
 import {Image, ImageSourcePropType, ImageURISource, StyleSheet, View} from "react-native";
+import {Button, Text} from "native-base";
 import ImagePicker from 'react-native-image-picker';
-import PositionedButton from "../../UI/PositionedButton/PositionedButton";
 
 type Props = {
     onImagePicked: (image: ImageURISource) => void;
@@ -39,7 +39,9 @@ class ImagePickerForm extends React.Component<Props, State> {
                 <View style={styles.placeholder}>
                     <Image source={this.state.pickedImage!} style={styles.preview} />
                 </View>
-                <PositionedButton title="Pick Image" onPress={this.pickImageHandler} />
+                <Button rounded onPress={this.pickImageHandler} style={styles.imagePickerBtn}>
+                    <Text>Pick Image</Text>
+                </Button>
             </React.Fragment>
         );
     }
@@ -57,6 +59,10 @@ const styles = StyleSheet.create({
         width: '100%',
         height: '100%',
         borderRadius: 10
+    },
+    imagePickerBtn: {
+        alignSelf: 'center',
+        marginVertical: 8
     }
 });
 

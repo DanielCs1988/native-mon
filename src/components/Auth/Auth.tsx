@@ -1,13 +1,10 @@
 import * as React from 'react';
-import { View, ImageBackground, KeyboardAvoidingView, TouchableWithoutFeedback, Keyboard } from "react-native";
+import { ImageBackground } from "react-native";
+import {Button, Container, Content, Form, H1, Icon, Input, Item, Text} from 'native-base';
 import SplashScreen from 'react-native-splash-screen';
-import Input from "../../components/UI/Input/Input";
-import Header from "../../components/UI/Header/Header";
 import backgroundImage from "../../assets/background.jpg";
-import StyledButton from "../../components/UI/StyledButton/StyledButton";
-import ResponsiveStyle from "../../hoc/ResponsiveStyle/ResponsiveStyle";
 import styles from "./Auth.styles";
-import {validate} from "../../utils";
+import {showErrorMessage, validate} from "../../utils";
 import {Credentials, NavProp} from "../../models";
 import Loader from "../../hoc/Loader/Loader";
 import {Routes} from "../../constants";
@@ -46,6 +43,7 @@ type Props = NavProp & {
     viewMode: string;
     loading: boolean;
     token: string;
+    error: string;
     onLogin: (credentials: Credentials) => void;
     onSignUp: (credentials: Credentials) => void;
 };
@@ -59,6 +57,9 @@ class AuthScreen extends React.Component<Props, State> {
     componentDidUpdate() {
         if (this.props.token) {
             this.props.navigation.navigate(Routes.MAIN_APPLICATION);
+        }
+        if (this.props.error) {
+            showErrorMessage('Invalid credentials!');
         }
     }
 
@@ -107,61 +108,62 @@ class AuthScreen extends React.Component<Props, State> {
         const landscapeMode = this.props.viewMode === 'landscape';
         const { formData: { email, password, confirmPassword }, onLoginPage } = this.state;
         return (
-            <ImageBackground source={backgroundImage} style={styles.bgImage}>
-                <KeyboardAvoidingView style={styles.container} behavior="padding">
-                    <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
-                        <View style={styles.container}>
-                            { landscapeMode ? null : <Header>{ onLoginPage ? 'Please Log In!' : 'Sign Up Today!' }</Header> }
-                            <StyledButton
-                                onPress={() => this.setState(prevState => ({ onLoginPage: !prevState.onLoginPage }))}
-                                btnStyle={styles.button}
-                            >{ onLoginPage ? 'Switch to Registration' : 'Back to Login' }</StyledButton>
-                            <Input
-                                placeholder="Your email..."
-                                style={styles.input}
-                                value={email.value}
-                                valid={email.valid}
-                                touched={email.touched}
-                                keyboardType="email-address"
-                                onChangeText={val => this.changeHandler('email', val)}
-                            />
-                            <ResponsiveStyle shouldStyle={landscapeMode} style={styles.passwordContainer}>
+            <Container>
+                <ImageBackground source={backgroundImage} style={styles.bgImage}>
+                    <Content padder contentContainerStyle={styles.container}>
+                        {
+                            landscapeMode ? null :
+                                <H1>{ onLoginPage ? 'Please Log In!' : 'Sign Up Today!' }</H1>
+                        }
+                        <Button rounded style={styles.button}
+                                onPress={() => this.setState(prevState => ({ onLoginPage: !prevState.onLoginPage }))}>
+                            <Text>{ onLoginPage ? 'Switch to Registration' : 'Back to Login' }</Text>
+                        </Button>
+                        <Form>
+                            <Item rounded success={email.valid} style={styles.input}>
                                 <Input
-                                    placeholder="Your password..."
-                                    style={[styles.input, landscapeMode && !onLoginPage ? styles.password : null]}
+                                    value={email.value}
+                                    placeholder="Your email..."
+                                    keyboardType="email-address"
+                                    onChangeText={val => this.changeHandler('email', val)}
+                                />
+                                <Icon name="checkmark-circle" />
+                            </Item>
+                            <Item rounded success={password.valid} style={styles.input}>
+                                <Input
                                     value={password.value}
-                                    valid={password.valid}
-                                    touched={password.touched}
                                     secureTextEntry
+                                    placeholder="Your password..."
                                     onChangeText={val => this.changeHandler('password', val)}
                                 />
-                                {
-                                    onLoginPage ? null :
+                                <Icon name="checkmark-circle" />
+                            </Item>
+                            {
+                                onLoginPage ? null :
+                                    <Item rounded success={confirmPassword.valid} style={styles.input}>
                                         <Input
-                                            placeholder="Confirm your password..."
-                                            style={[styles.input, landscapeMode ? styles.password: null]}
                                             value={confirmPassword.value}
-                                            valid={confirmPassword.valid}
-                                            touched={confirmPassword.touched}
                                             secureTextEntry
+                                            placeholder="Please repeat your password..."
                                             onChangeText={val => this.changeHandler('confirmPassword', val)}
                                         />
-                                }
-                            </ResponsiveStyle>
-                            <Loader loading={this.props.loading}>
-                                <StyledButton
+                                        <Icon name="checkmark-circle" />
+                                    </Item>
+                            }
+                        </Form>
+                        <Loader loading={this.props.loading}>
+                            <Button rounded style={styles.button}
                                     onPress={this.authHandler}
-                                    btnStyle={styles.button}
                                     disabled={!(
                                         email.valid && password.valid &&
                                         (onLoginPage || confirmPassword.valid)
-                                    )}
-                                >Submit</StyledButton>
-                            </Loader>
-                        </View>
-                    </TouchableWithoutFeedback>
-                </KeyboardAvoidingView>
-            </ImageBackground>
+                                    )}>
+                                <Text>Submit</Text>
+                            </Button>
+                        </Loader>
+                    </Content>
+                </ImageBackground>
+            </Container>
         );
     }
 }

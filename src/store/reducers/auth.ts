@@ -5,7 +5,8 @@ export const initialState: AuthState = {
     token: null,
     userId: null,
     expiresIn: null,
-    loading: false
+    loading: false,
+    error: null
 };
 
 const authReducer = (state = initialState, action: AuthActions) => {
@@ -13,18 +14,21 @@ const authReducer = (state = initialState, action: AuthActions) => {
         case ActionTypes.AUTH_STARTED:
             return {
                 ...state,
-                loading: true
+                loading: true,
+                error: null
             };
         case ActionTypes.AUTH_SUCCESS:
             return {
                 ...state,
                 ...action.payload,
-                loading: false
+                loading: false,
+                error: null
             };
         case ActionTypes.AUTH_FAILED:
             return {
                 ...state,
-                loading: false
+                loading: false,
+                error: action.payload
             };
         case ActionTypes.LOGOUT:
             return initialState;

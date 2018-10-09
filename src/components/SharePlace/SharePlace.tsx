@@ -1,20 +1,21 @@
 import * as React from 'react';
-import {View, StyleSheet, ScrollView, ImageURISource} from "react-native";
+import {StyleSheet, ImageURISource} from "react-native";
+import {Button, Item, Input, Text, Label, Icon, Container, Content} from "native-base";
 import SplashScreen from 'react-native-splash-screen';
 import ImagePickerForm from "./ImagePickerForm/ImagePickerForm";
-import PositionedButton from "../UI/PositionedButton/PositionedButton";
 import LocationPicker from "./LocationPicker/LocationPicker";
-import Input from "../UI/Input/Input";
-import {validate} from "../../utils";
+import {showErrorMessage, validate} from "../../utils";
 import {LatLng} from "react-native-maps";
 import {NavProp, Place} from "../../models";
 import Loader from "../../hoc/Loader/Loader";
 import {createRef} from "react";
 import {Routes} from "../../constants";
+import NavBar from "../UI/NavBar/NavBar";
 
 type Props = NavProp & {
     loading: boolean;
     placeAdded: boolean;
+    error: string | null;
     onNewPlace: (place: Place) => void;
     resetAddPlace: () => void;
 }
@@ -51,6 +52,9 @@ class SharePlace extends React.Component<Props, any> {
             this.props.resetAddPlace();
             this.props.navigation.navigate(Routes.FIND_PLACE);
         }
+        if (this.props.error) {
+            showErrorMessage(this.props.error);
+        }
     }
 
     private changeHandler = (placeName: string) => {
@@ -79,7 +83,7 @@ class SharePlace extends React.Component<Props, any> {
                 value: image,
                 valid: true
             }
-        }, () => console.log('Callback can be called in SetState!'));
+        });
     };
 
     private newPlaceHandler = () => {
@@ -96,35 +100,42 @@ class SharePlace extends React.Component<Props, any> {
     render() {
         const { placeName, location, image } = this.state;
         return (
-            <ScrollView>
-                <View style={styles.container}>
+            <Container>
+                <NavBar navigation={this.props.navigation} title="Share a Place"/>
+                <Content padder contentContainerStyle={styles.container}>
                     <ImagePickerForm onImagePicked={this.imagePickedHandler} ref={this.imagePickerForm} />
                     <LocationPicker onLocationPicked={this.locationPickedHandler} ref={this.locationPicker} />
-                    <Input
-                        placeholder="An awesome place..."
-                        value={placeName.value}
-                        valid={placeName.valid}
-                        touched={placeName.touched}
-                        onChangeText={this.changeHandler}
-                    />
+                    <Item floatingLabel success={placeName.valid} style={styles.placeNameInput}>
+                        <Label>An awesome place</Label>
+                        <Input value={placeName.value} onChangeText={this.changeHandler} />
+                        <Icon name="checkmark-circle" />
+                    </Item>
                     <Loader loading={this.props.loading}>
-                        <PositionedButton
-                            title="Share the Place!"
-                            onPress={this.newPlaceHandler}
-                            disabled={!(placeName.valid && location.valid && image.valid)}
-                        />
+                        <Button success rounded
+                                style={styles.submitBtn}
+                                onPress={this.newPlaceHandler}
+                                disabled={!(placeName.valid && location.valid && image.valid)}>
+                            <Text>Share the Place!</Text>
+                        </Button>
                     </Loader>
-                </View>
-            </ScrollView>
+                </Content>
+            </Container>
         );
     }
 }
 
 const styles = StyleSheet.create({
     container: {
-        flex: 1,
         paddingTop: 15,
         alignItems: 'center'
+    },
+    submitBtn: {
+        alignSelf: 'center',
+        marginTop: 8,
+        marginBottom: 16
+    },
+    placeNameInput: {
+        marginVertical: 16
     }
 });
 

@@ -1,10 +1,12 @@
 import React from 'react';
-import {Animated, Dimensions, FlatList, View} from "react-native";
+import {Animated, Dimensions, FlatList} from "react-native";
 import Place from "./Place/Place";
 import {NavProp, Place as IPlace} from "../../models";
-import StyledButton from "../UI/StyledButton/StyledButton";
 import styles from "./Places.styles";
 import {Routes} from "../../constants";
+import {Button, Container, Content, Text} from "native-base";
+import NavBar from "../UI/NavBar/NavBar";
+import {showErrorMessage} from "../../utils";
 
 const initialState = {
     placesLoaded: false,
@@ -13,17 +15,21 @@ const initialState = {
 type State = Readonly<typeof initialState>;
 type Props = NavProp & {
     places: IPlace[];
+    error: string | null;
     getPlaces: () => void;
 };
 class Places extends React.Component<Props, State> {
-    static navigationOptions = {
-        title: 'Find Place'
-    };
 
     readonly state = initialState;
 
     componentDidMount() {
         this.props.getPlaces();
+    }
+
+    componentDidUpdate() {
+        if (this.props.error) {
+            showErrorMessage(this.props.error);
+        }
     }
 
     private placesSearchHandler = () => {
@@ -66,31 +72,40 @@ class Places extends React.Component<Props, State> {
         };
         if (!this.state.placesLoaded) {
             return (
-                <View style={styles.buttonContainer}>
-                    <Animated.View style={btnAnimation}>
-                        <StyledButton
-                            onPress={this.placesSearchHandler}
-                            btnStyle={styles.searchButton}
-                            textStyle={styles.searchButtonText}
-                        >Search</StyledButton>
-                    </Animated.View>
-                </View>
+                <Container>
+                    <NavBar navigation={navigation} title="Find a Place"/>
+                    <Content contentContainerStyle={styles.buttonContainer}>
+                        <Animated.View style={btnAnimation}>
+                            <Button large transparent rounded
+                                    style={styles.searchButton}
+                                    onPress={this.placesSearchHandler}
+                            >
+                                <Text style={styles.searchButtonText}>Search</Text>
+                            </Button>
+                        </Animated.View>
+                    </Content>
+                </Container>
             );
         }
         return (
-            <Animated.View style={listAnimation}>
-                <FlatList
-                    style={styles.listContainer}
-                    data={places}
-                    renderItem={({ item: place }) => (
-                        <Place
-                            name={place.name}
-                            image={place.image}
-                            onSelect={() => navigation.push(Routes.PLACE_DETAILS, { place })}
+            <Container>
+                <NavBar navigation={navigation} title="Find a Place"/>
+                <Content padder>
+                    <Animated.View style={listAnimation}>
+                        <FlatList
+                            style={styles.listContainer}
+                            data={places}
+                            renderItem={({ item: place }) => (
+                                <Place
+                                    name={place.name}
+                                    image={place.image}
+                                    onSelect={() => navigation.push(Routes.PLACE_DETAILS, { place })}
+                                />
+                            )}
                         />
-                    )}
-                />
-            </Animated.View>
+                    </Animated.View>
+                </Content>
+            </Container>
         );
     }
 }

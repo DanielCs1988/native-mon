@@ -16,38 +16,31 @@ export function* getPlaces() {
         const places = Object.keys(data).map(key => ({ ...data[key], key }));
         yield put(Actions.getPlacesSuccess(places));
     } catch (error) {
-        yield put(Actions.addPlaceFailed(error.message));
-        yield call(alert, error.message);
+        yield put(Actions.getPlacesFailed(error.message));
     }
 }
 
-export function* sendPlace(action: any) {
+export function* sendPlace(action) {
     const place  = action.payload;
     try {
         const token = yield call(getToken);
         yield put(Actions.addPlaceStarted());
         const { imageUrl } = yield call(Api.uploadImage, place.image, token);
         const image = { uri: imageUrl };
-        const data = yield call(Api.sendPlace, { ...place, image }, token);
-        yield put(Actions.addPlaceSuccess({ ...place, key: data.name, image }));
+        const { name: key } = yield call(Api.sendPlace, { ...place, image }, token);
+        yield put(Actions.addPlaceSuccess({ ...place, key, image }));
     } catch (error) {
-        yield call(handleSendingError, error);
+        yield put(Actions.addPlaceFailed(error.message));
     }
 }
 
-export function* handleSendingError(error: Error) {
-    yield put(Actions.addPlaceFailed(error.message));
-    yield call(alert, error.message);
-}
-
-export function* removePlace(action: any) {
+export function* removePlace(action) {
     const place = action.payload;
     try {
         yield put(Actions.removePlaceSuccess(place.key));
         const token = yield call(getToken);
         yield call(Api.removePlace, place.key, token);
     } catch (error) {
-        yield put(Actions.removePlaceFailed(place));
-        yield call(alert, error.message);
+        yield put(Actions.removePlaceFailed(place, error.message));
     }
 }

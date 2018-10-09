@@ -1,8 +1,8 @@
 import * as React from 'react';
-import { ActivityIndicator } from "react-native";
+import { Spinner } from "native-base";
 
 const Loader = ({ loading, children }: Props) => (
-    loading ? <ActivityIndicator /> : children
+    loading ? <Spinner color="green" /> : children
 );
 
 export interface Props {

@@ -1,5 +1,6 @@
 import React from 'react';
-import {View, Text, Image, StyleSheet, TouchableOpacity, ImageURISource} from "react-native";
+import {StyleSheet, ImageURISource} from "react-native";
+import {Body, Left, ListItem, Thumbnail, Text} from "native-base";
 
 type Props = {
     name: string;
@@ -7,28 +8,19 @@ type Props = {
     onSelect: () => void;
 }
 const Place = ({ name, image, onSelect }: Props) => (
-    <TouchableOpacity onPress={onSelect}>
-        <View style={styles.place}>
-            <Image source={image} style={styles.placeImage} />
+    <ListItem thumbnail onPress={onSelect} style={styles.place}>
+        <Left>
+            <Thumbnail square source={image} />
+        </Left>
+        <Body>
             <Text>{name}</Text>
-        </View>
-    </TouchableOpacity>
+        </Body>
+    </ListItem>
 );
 
 const styles = StyleSheet.create({
     place: {
-        width: '100%',
-        padding: 10,
-        margin: 5,
-        textAlign: 'center',
-        flexDirection: 'row',
-        alignItems: 'center',
-        backgroundColor: '#eee'
-    },
-    placeImage: {
-        marginRight: 8,
-        width: 30,
-        height: 30
+        marginBottom: 10
     }
 });
 

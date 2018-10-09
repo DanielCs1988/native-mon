@@ -6,6 +6,7 @@ export interface PlaceState {
     places: Place[];
     loading: boolean;
     placeAdded: boolean;
+    error: string | null;
 }
 
 export interface AuthState {
@@ -13,6 +14,7 @@ export interface AuthState {
     userId: string | null;
     expiresIn: number | null;
     loading: boolean;
+    error: string | null;
 }
 
 export interface AppState {

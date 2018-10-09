@@ -9,7 +9,8 @@ const styles = StyleSheet.create({
         flexDirection: 'row'
     },
     subContainer: {
-        flex: 1
+        flex: 1,
+        alignItems: 'center'
     },
     imageAndMapContainer: {
         flex: 2
@@ -19,12 +20,11 @@ const styles = StyleSheet.create({
         height: '100%'
     },
     placeName: {
-        fontWeight: 'bold',
-        fontSize: 28,
-        textAlign: 'center'
+        marginVertical: 12
     },
     deleteBtn: {
-        justifyContent: 'center'
+        alignSelf: 'center',
+        marginTop: 8
     },
     map: {
         ...StyleSheet.absoluteFillObject

@@ -1,6 +1,6 @@
 import * as React from 'react';
-import PositionedButton from "../../UI/PositionedButton/PositionedButton";
 import { Dimensions, StyleSheet, View } from "react-native";
+import {Button, Text} from "native-base";
 import MapView, { Marker, LatLng } from 'react-native-maps';
 
 const initialState = {
@@ -63,7 +63,9 @@ class LocationPicker extends React.Component<Props, State> {
                 >{
                         locationPicked ? <Marker coordinate={focusedLocation} /> : null
                 }</MapView>
-                <PositionedButton title="Locate Me" onPress={this.getLocationHandler} />
+                <Button rounded onPress={this.getLocationHandler} style={styles.locateMeBtn}>
+                    <Text>Locate Me</Text>
+                </Button>
             </View>
         );
     }
@@ -77,6 +79,10 @@ const styles = StyleSheet.create({
     map: {
         width: '100%',
         height: 250
+    },
+    locateMeBtn: {
+        alignSelf: 'center',
+        marginVertical: 8
     }
 });
 

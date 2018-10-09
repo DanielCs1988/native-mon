@@ -56,7 +56,6 @@ export function* authenticate(credentials: Credentials, isLogin: boolean) {
         yield call(saveAuthData, authPayload);
     } catch (error) {
         yield put(Actions.authFailed(error.message));
-        yield call(alert, 'Invalid credentials!');
     }
 }
 
@@ -74,7 +73,7 @@ export function* refreshToken() {
 export function* autoSignIn() {
     const expiresIn = yield call([AsyncStorage, 'getItem'], StorageKeys.EXPIRES_IN);
     if (!expiresIn) {
-        throw new Error('AutoSignIn called when credentials are not present in the storage!');
+        return false;
     }
     const now = new Date().getTime();
     if (+expiresIn < now) {

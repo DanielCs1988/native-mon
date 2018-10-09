@@ -7,6 +7,7 @@ import authReducer from "./reducers/auth";
 import placeReducer from "./reducers/places";
 import { AppState } from "./types";
 import Router from '../router';
+import {Root} from "native-base";
 
 const rootReducer = combineReducers({
     places: placeReducer,
@@ -24,9 +25,11 @@ const store: Store<AppState> = createStore(rootReducer, composeEnhancers(
 sagaMiddleware.run(rootSaga);
 
 const AppWithStore = () => (
-    <Provider store={store}>
-        <Router />
-    </Provider>
+    <Root>
+        <Provider store={store}>
+            <Router />
+        </Provider>
+    </Root>
 );
 
 export default AppWithStore;

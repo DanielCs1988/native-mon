@@ -3,7 +3,6 @@ import {StyleSheet} from "react-native";
 const styles = StyleSheet.create({
     container: {
         flex: 1,
-        width: '100%',
         justifyContent: 'center',
         alignItems: 'center'
     },
@@ -14,23 +13,13 @@ const styles = StyleSheet.create({
     input: {
         backgroundColor: '#eee',
         borderColor: '#aaa',
-        width: '80%'
-    },
-    password: {
-        width: '45%'
-    },
-    passwordContainer: {
-        flexDirection: 'row',
-        justifyContent: 'space-between',
-        width: '80%'
+        opacity: 0.9,
+        width: '80%',
+        marginBottom: 10
     },
     button: {
-        padding: 10,
-        margin: 5,
-        borderRadius: 5,
-        borderWidth: 1,
-        borderColor: '#777',
-        backgroundColor: '#29AAF4'
+        marginVertical: 10,
+        alignSelf: 'center'
     }
 });
 
