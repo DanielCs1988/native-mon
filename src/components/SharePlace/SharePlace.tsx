@@ -107,7 +107,11 @@ class SharePlace extends React.Component<Props, any> {
                     <LocationPicker onLocationPicked={this.locationPickedHandler} ref={this.locationPicker} />
                     <Item floatingLabel success={placeName.valid} style={styles.placeNameInput}>
                         <Label>An awesome place</Label>
-                        <Input value={placeName.value} onChangeText={this.changeHandler} />
+                        <Input
+                            value={placeName.value}
+                            onChangeText={this.changeHandler}
+                            autoCorrect={false} autoCapitalize="none"
+                        />
                         <Icon name="checkmark-circle" />
                     </Item>
                     <Loader loading={this.props.loading}>

@@ -122,6 +122,7 @@ class AuthScreen extends React.Component<Props, State> {
                         <Form>
                             <Item rounded success={email.valid} style={styles.input}>
                                 <Input
+                                    autoCorrect={false} autoCapitalize="none"
                                     value={email.value}
                                     placeholder="Your email..."
                                     keyboardType="email-address"
@@ -132,7 +133,7 @@ class AuthScreen extends React.Component<Props, State> {
                             <Item rounded success={password.valid} style={styles.input}>
                                 <Input
                                     value={password.value}
-                                    secureTextEntry
+                                    secureTextEntry autoCorrect={false} autoCapitalize="none"
                                     placeholder="Your password..."
                                     onChangeText={val => this.changeHandler('password', val)}
                                 />
@@ -143,7 +144,7 @@ class AuthScreen extends React.Component<Props, State> {
                                     <Item rounded success={confirmPassword.valid} style={styles.input}>
                                         <Input
                                             value={confirmPassword.value}
-                                            secureTextEntry
+                                            secureTextEntry autoCorrect={false} autoCapitalize="none"
                                             placeholder="Please repeat your password..."
                                             onChangeText={val => this.changeHandler('confirmPassword', val)}
                                         />

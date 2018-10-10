@@ -15,7 +15,8 @@ const styles = StyleSheet.create({
         borderColor: '#aaa',
         opacity: 0.9,
         width: '80%',
-        marginBottom: 10
+        marginBottom: 10,
+        paddingLeft: 5
     },
     button: {
         marginVertical: 10,
